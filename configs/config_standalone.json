@@ -59,7 +59,7 @@
                         "secret_demo": {
                           "type": "local.file",
                           "metadata": {
-                            "secretsFile": "../../configs/secret/config_secret_local_file.json"
+                            "secretsFile": "/Users/qiangzhiwei/code/goland/layotto/configs/secret/config_secret_local_file.json"
                           }
                         },
                         "secret_demo1": {
@@ -141,5 +141,53 @@
         }
       }
     ]
+  },
+  "dynamic_resources": {
+    "lds_config": {
+      "ads": {}
+    },
+    "cds_config": {
+      "ads": {}
+    },
+    "ads_config": {
+      "api_type": "GRPC",
+      "cluster_names": [
+        "xxx"
+      ],
+      "grpc_services": [
+        {
+          "envoy_grpc": {
+            "cluster_name": "xds-grpc"
+          }
+        }
+      ]
+    }
+  },
+  "static_resources": {
+    "clusters": [
+      {
+        "name": "xds-grpc",
+        "type": "STRICT_DNS",
+        "lb_policy": "RANDOM",
+        "load_assignment": {
+          "cluster_name": "prometheus_stats",
+          "endpoints": [{
+            "lb_endpoints": [{
+              "endpoint": {
+                "address":{
+                  "socket_address": {
+                    "protocol": "TCP",
+                    "address": "127.0.0.1",
+                    "port_value": 15000
+                  }
+                }
+              }
+            }]
+          }]
+        },
+        "http2_protocol_options": {}
+      }
+    ]
   }
 }
+
